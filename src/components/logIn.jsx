@@ -2,13 +2,16 @@ import { useFormik } from "formik";
 import { basicSchema} from "./valyup";
 import React from 'react';
 
-const onSubmit = () => {
+const onSubmit = async(values, actions) => {
     console.log("I have been submitted")
+    console.log(values)
+    await new Promise((r) => setTimeout(r, 2000));
+    actions.resetForm()
 }
 
 
 const LogIn = () => {
-    const {values, touched, handleSubmit, handleChange, errors} = useFormik({
+    const {values, touched, handleSubmit, handleChange, errors, isSubmitting} = useFormik({
         initialValues: {
             email: '',
             age : '',
@@ -50,7 +53,7 @@ const LogIn = () => {
                     value={values.password}
                 /> 
                 {errors.password && touched.password && <p>{errors.password}</p>}
-                <button type="submit">Submit</button>
+                <button disabled={isSubmitting} type="submit">Submit</button>
             </form>
         </div>  
     )
